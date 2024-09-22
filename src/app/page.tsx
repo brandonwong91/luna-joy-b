@@ -1,13 +1,12 @@
 import Link from "next/link";
 
-import { LatestPost } from "~/app/_components/post";
 import { Button } from "~/components/ui/button";
 import { Spotlight } from "~/components/ui/spotlight";
 import { getServerAuthSession } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
+  // const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   void api.post.getLatest.prefetch();
@@ -24,7 +23,7 @@ export default async function Home() {
             Luna Joy B <br /> is here to help.
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-center text-base font-normal text-neutral-300">
-            This is Brandon's take on a mental health daily logger with a
+            This is Brandon&#39;s take on a mental health daily logger with a
             tracker to view trends.
           </p>
           <div className="mt-2 flex place-items-center justify-center">

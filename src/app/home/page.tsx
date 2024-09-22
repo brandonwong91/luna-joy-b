@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
 
-export const description =
-  "A settings page. The settings page has a sidebar navigation and a main content area. The main content area has a form to update the store name and a form to update the plugins directory. The sidebar navigation has links to general, security, integrations, support, organizations, and advanced settings.";
-
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -22,7 +19,6 @@ import { Calendar } from "~/components/ui/calendar";
 const Home = () => {
   // const session = getServerAuthSession();
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-
   //   console.log(test?.user);
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -166,7 +162,7 @@ const Home = () => {
               <CardHeader>
                 <CardTitle>Log entry</CardTitle>
                 <CardDescription>
-                  Let's note down how we're doing today.
+                  Let&#39;s note down how we&#39;re doing today.
                 </CardDescription>
               </CardHeader>
               <CardContent>
