@@ -1,27 +1,9 @@
 "use client";
 import React from "react";
-import Link from "next/link";
-import {
-  CircleUser,
-  Menu,
-  Package2,
-  Search,
-  Sheet,
-  UnderlineIcon,
-} from "lucide-react";
 
 export const description =
   "A settings page. The settings page has a sidebar navigation and a main content area. The main content area has a form to update the store name and a form to update the plugins directory. The sidebar navigation has links to general, security, integrations, support, organizations, and advanced settings.";
 
-import { getServerAuthSession } from "~/server/auth";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -31,12 +13,10 @@ import {
   CardContent,
   CardFooter,
 } from "~/components/ui/card";
-import { SheetTrigger, SheetContent } from "~/components/ui/sheet";
 import { Input } from "~/components/ui/input";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
-import { FontBoldIcon, FontItalicIcon } from "@radix-ui/react-icons";
 import { Calendar } from "~/components/ui/calendar";
 
 const Home = () => {
