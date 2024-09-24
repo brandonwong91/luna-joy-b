@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { NavigationMenuContainer } from "~/components/ui/navigation-menu-container";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Luna Joy B",
@@ -17,7 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <NavigationMenuContainer />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );

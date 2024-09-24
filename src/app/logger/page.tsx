@@ -15,9 +15,19 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
 import { Calendar } from "~/components/ui/calendar";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const router = useRouter();
   // const session = getServerAuthSession();
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/");
+    },
+  });
+
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   //   console.log(test?.user);
   return (
@@ -143,22 +153,17 @@ const Home = () => {
       </header> */}
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl gap-2">
-          <h1 className="text-3xl font-semibold">{`Hello there, let's get logging!`}</h1>
+          <h1 className="text-2xl font-semibold md:text-3xl">{`Hello there, let's get logging!`}</h1>
         </div>
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-          <nav
-            className="grid gap-4 text-sm text-muted-foreground"
-            x-chunk="dashboard-04-chunk-0"
-          >
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border"
-            />
-          </nav>
-          <div className="grid gap-6">
-            <Card x-chunk="dashboard-04-chunk-1">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="w-fit place-self-center rounded-md border"
+          />
+          <div className="grid place-content-center gap-6">
+            <Card x-chunk="dashboard-04-chunk-1" className="w-64 md:w-fit">
               <CardHeader>
                 <CardTitle>Log entry</CardTitle>
                 <CardDescription>
@@ -166,11 +171,14 @@ const Home = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex flex-col gap-y-3">
+                <form className="flex flex-col gap-y-3 md:w-fit">
                   <div className="flex flex-col gap-0.5">
                     <Label htmlFor="terms">Mood ratings</Label>
                     <div className="flex justify-start">
-                      <ToggleGroup type="single" className="self-start">
+                      <ToggleGroup
+                        type="single"
+                        className="flex-wrap self-start"
+                      >
                         <ToggleGroupItem
                           value="-2"
                           aria-label="Toggle very sad"
@@ -198,7 +206,10 @@ const Home = () => {
                   <div className="flex flex-col gap-0.5">
                     <Label htmlFor="terms">Anxiety levels</Label>
                     <div className="flex justify-start">
-                      <ToggleGroup type="single" className="self-start">
+                      <ToggleGroup
+                        type="single"
+                        className="flex-wrap self-start"
+                      >
                         <ToggleGroupItem
                           value="-2"
                           aria-label="Toggle very anxious"
@@ -228,7 +239,7 @@ const Home = () => {
                     <Label>Hours of sleep</Label>
                     <Input placeholder="e.g. 8"></Input>
                     <Label>Quality of sleep</Label>
-                    <ToggleGroup type="single" className="self-start">
+                    <ToggleGroup type="single" className="flex-wrap self-start">
                       <ToggleGroupItem
                         value="-2"
                         aria-label="Toggle very Tired"
@@ -268,7 +279,7 @@ const Home = () => {
                     <Label>Social interactions</Label>
                   </div>
                   <Label>Stress levels</Label>
-                  <ToggleGroup type="single" className="self-start">
+                  <ToggleGroup type="single" className="flex-wrap self-start">
                     <ToggleGroupItem value="-2" aria-label="Toggle very Tired">
                       Very stressed
                     </ToggleGroupItem>

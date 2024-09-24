@@ -1,9 +1,11 @@
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
 import { Spotlight } from "~/components/ui/spotlight";
 import { getServerAuthSession } from "~/server/auth";
 import { api, HydrateClient } from "~/trpc/server";
+import GetStartedButton from "./get-started-button";
 
 export default async function Home() {
   // const hello = await api.post.hello({ text: "from tRPC" });
@@ -26,17 +28,7 @@ export default async function Home() {
             This is Brandon&#39;s take on a mental health daily logger with a
             tracker to view trends.
           </p>
-          <div className="mt-2 flex place-items-center justify-center">
-            <Button className="self-center" variant={"secondary"}>
-              {/* <Link href={"/home"}>Get started by signing in</Link> */}
-              <Link
-                href={session ? "/api/auth/signout" : "/api/auth/signin"}
-                // className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-              >
-                {session ? "Sign out" : "Get started by signing in"}
-              </Link>
-            </Button>
-          </div>
+          {!session && <GetStartedButton />}
         </div>
       </div>
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
