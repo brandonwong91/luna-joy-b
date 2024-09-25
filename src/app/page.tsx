@@ -20,7 +20,7 @@ export default async function Home() {
           className="-top-40 left-0 md:-top-20 md:left-60"
           fill="white"
         />
-        <div className="relative z-10 mx-auto w-full max-w-7xl p-4 pt-20 md:pt-0">
+        <div className="relative z-10 mx-auto mt-40 w-full max-w-7xl p-4 md:pt-0">
           <h1 className="bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-4xl font-bold text-transparent md:text-7xl">
             Luna Joy B <br /> is here to help.
           </h1>
