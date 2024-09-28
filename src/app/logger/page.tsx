@@ -17,7 +17,8 @@ import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
 import { Calendar } from "~/components/ui/calendar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { type Log, useLogStore } from "./state";
+import { useLogStore } from "./state";
+import { api } from "~/trpc/react";
 
 const Home = () => {
   const router = useRouter();
@@ -29,10 +30,9 @@ const Home = () => {
     },
   });
 
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-  //   console.log(test?.user);
-
-  const { log, setLog } = useLogStore((state) => state);
+  const { log, setLog, clearLog, date, setDate } = useLogStore(
+    (state) => state,
+  );
 
   const handleOnChangeLog = (
     field: string,
@@ -45,8 +45,23 @@ const Home = () => {
     setLog(updatedLog);
   };
 
-  const handleSaveLog = () => {
-    console.log(log);
+  const getLogsApi = api.log.getLogs.useQuery();
+  console.log(getLogsApi.data);
+  const createLogApi = api.log.create.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
+
+  const handleSaveLog = async () => {
+    createLogApi.mutate({
+      ...log,
+      moodRatings: log.moodRatings ?? 0,
+      anxietyLevels: log.anxietyLevels ?? 0,
+      stressLevels: log.stressLevels ?? 0,
+      createdAt: date ?? undefined,
+    });
+    clearLog();
   };
 
   return (
@@ -85,6 +100,7 @@ const Home = () => {
                           if (value)
                             handleOnChangeLog("moodRatings", parseInt(value));
                         }}
+                        value={log.moodRatings?.toString()}
                       >
                         <ToggleGroupItem
                           value="-2"
@@ -123,6 +139,7 @@ const Home = () => {
                           if (value)
                             handleOnChangeLog("anxietyLevels", parseInt(value));
                         }}
+                        value={log.anxietyLevels?.toString()}
                       >
                         <ToggleGroupItem
                           value="-2"
@@ -147,8 +164,45 @@ const Home = () => {
                         </ToggleGroupItem>
                       </ToggleGroup>
                     </div>
+                    <div className="flex flex-col gap-0.5">
+                      <Label className="flex">
+                        Stress levels
+                        <p className="text-red-700">*</p>
+                      </Label>
+                      <ToggleGroup
+                        type="single"
+                        className="flex-wrap self-start"
+                        onValueChange={(value) => {
+                          if (value)
+                            handleOnChangeLog("stressLevels", parseInt(value));
+                        }}
+                        value={log.stressLevels?.toString()}
+                      >
+                        <ToggleGroupItem
+                          value="5"
+                          aria-label="Toggle very Tired"
+                        >
+                          Very stressed
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="4" aria-label="Toggle Tired">
+                          Stressed
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="3" aria-label="Toggle neutral">
+                          Neutral
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="2" aria-label="Toggle rested">
+                          Relaxed
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="1"
+                          aria-label="Toggle very rested"
+                        >
+                          Very relaxed
+                        </ToggleGroupItem>
+                      </ToggleGroup>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-y-3">
+                  <div className="flex flex-col gap-0.5">
                     <Label className="text-md">Sleep patterns</Label>
                     <Label>Hours of sleep</Label>
                     <Input
@@ -193,6 +247,8 @@ const Home = () => {
                     </ToggleGroup>
                     <div className="flex items-center gap-x-2">
                       <Checkbox
+                        checked={log.sleepDisturbances}
+                        defaultChecked={log.sleepDisturbances}
                         onClick={() => {
                           handleOnChangeLog(
                             "sleepDisturbances",
@@ -200,7 +256,17 @@ const Home = () => {
                           );
                         }}
                       />
-                      <Label>Sleep disturbances</Label>
+                      <Label
+                        className="cursor-pointer"
+                        onClick={() => {
+                          handleOnChangeLog(
+                            "sleepDisturbances",
+                            !log.sleepDisturbances,
+                          );
+                        }}
+                      >
+                        Sleep disturbances
+                      </Label>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-3">
@@ -214,47 +280,41 @@ const Home = () => {
                     <Checkbox
                       onClick={() => {
                         handleOnChangeLog(
-                          "sleepDisturbances",
+                          "socialInteractions",
                           !log.socialInteractions,
                         );
                       }}
+                      checked={log.socialInteractions}
+                      defaultChecked={log.socialInteractions}
                     />
-                    <Label>Social interactions</Label>
+                    <Label
+                      className="cursor-pointer"
+                      onClick={() => {
+                        handleOnChangeLog(
+                          "socialInteractions",
+                          !log.socialInteractions,
+                        );
+                      }}
+                    >
+                      Social interactions
+                    </Label>
                   </div>
-                  <Label className="flex">
-                    Stress levels
-                    <p className="text-red-700">*</p>
-                  </Label>
-                  <ToggleGroup
-                    type="single"
-                    className="flex-wrap self-start"
-                    onValueChange={(value) => {
-                      if (value)
-                        handleOnChangeLog("stressLevels", parseInt(value));
-                    }}
-                  >
-                    <ToggleGroupItem value="5" aria-label="Toggle very Tired">
-                      Very stressed
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="4" aria-label="Toggle Tired">
-                      Stressed
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="3" aria-label="Toggle neutral">
-                      Neutral
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="2" aria-label="Toggle rested">
-                      Relaxed
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="1" aria-label="Toggle very rested">
-                      Very relaxed
-                    </ToggleGroupItem>
-                  </ToggleGroup>
+
                   <Label>Symptoms of depression or anxiety</Label>
                   <Input placeholder="e.g. Feeling sad"></Input>
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button onClick={handleSaveLog}>Save</Button>
+                <Button
+                  onClick={handleSaveLog}
+                  disabled={
+                    log.moodRatings === undefined ||
+                    log.anxietyLevels === undefined ||
+                    log.stressLevels === undefined
+                  }
+                >
+                  Save
+                </Button>
               </CardFooter>
             </Card>
           </div>

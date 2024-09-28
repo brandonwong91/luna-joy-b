@@ -1,36 +1,46 @@
 import { create } from "zustand";
 
+export interface PhysicalActivity {
+  type: string;
+  duration: number;
+}
+
 export interface Log {
-  moodRatings: number;
-  anxietyLevels: number;
-  sleepHours: number;
-  sleepQuality: number;
+  moodRatings?: number;
+  anxietyLevels?: number;
+  stressLevels?: number;
+  sleepHours?: number;
+  sleepQuality?: number;
   sleepDisturbances: boolean;
-  physicalActivities: {
-    type: string;
-    duration: number;
-  }[];
+  physicalActivities: PhysicalActivity[];
   socialInteractions: boolean;
-  stressLevels: number;
   symptoms: string;
 }
 
 interface LogState {
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
   log: Log;
   setLog: (log: Log) => void;
+  clearLog: () => void;
 }
 
+const initLog = {
+  moodRatings: undefined,
+  anxietyLevels: undefined,
+  stressLevels: undefined,
+  sleepHours: undefined,
+  sleepQuality: undefined,
+  sleepDisturbances: false,
+  physicalActivities: [],
+  socialInteractions: false,
+  symptoms: "",
+};
+
 export const useLogStore = create<LogState>((set) => ({
-  log: {
-    moodRatings: 0,
-    anxietyLevels: 0,
-    sleepHours: 0,
-    sleepQuality: 0,
-    sleepDisturbances: false,
-    physicalActivities: [],
-    socialInteractions: false,
-    stressLevels: 0,
-    symptoms: "",
-  },
+  date: new Date(),
+  setDate: (date: Date | undefined) => set({ date }),
+  log: initLog,
   setLog: (log: Log) => set({ log }),
+  clearLog: () => set({ log: initLog }),
 }));
