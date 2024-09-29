@@ -1,17 +1,11 @@
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-
-import { Button } from "~/components/ui/button";
 import { Spotlight } from "~/components/ui/spotlight";
 import { getServerAuthSession } from "~/server/auth";
-import { api, HydrateClient } from "~/trpc/server";
+import { HydrateClient } from "~/trpc/server";
 import GetStartedButton from "./get-started-button";
 
 export default async function Home() {
   // const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
-
-  void api.post.getLatest.prefetch();
 
   return (
     <HydrateClient>

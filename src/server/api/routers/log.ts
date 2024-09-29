@@ -66,4 +66,22 @@ export const logRouter = createTRPCRouter({
 
     return logs ?? null;
   }),
+
+  getLogsByDate: protectedProcedure
+    .input(z.object({ startDate: z.date(), endDate: z.date() }))
+    .query(async ({ ctx, input }) => {
+      const { startDate, endDate } = input;
+      const logs = await ctx.db.log.findMany({
+        orderBy: { createdAt: "asc" },
+        where: {
+          createdBy: { id: ctx.session.user.id },
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
+      });
+
+      return logs ?? null;
+    }),
 });

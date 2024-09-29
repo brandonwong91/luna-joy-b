@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useLogStore } from "./state";
 import { api } from "~/trpc/react";
+import LogChart from "./LogChart";
 
 const Home = () => {
   const router = useRouter();
@@ -78,6 +79,7 @@ const Home = () => {
             className="w-fit place-self-center rounded-md border"
           />
           <div className="grid place-content-center gap-6">
+            <LogChart />
             <Card x-chunk="dashboard-04-chunk-1" className="w-64 md:w-fit">
               <CardHeader>
                 <CardTitle>Log entry</CardTitle>

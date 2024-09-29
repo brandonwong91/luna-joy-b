@@ -20,6 +20,8 @@ export interface Log {
 interface LogState {
   date: Date | undefined;
   setDate: (date: Date | undefined) => void;
+  chartDuration: number;
+  setChartDuration: (chartDuration: number) => void;
   log: Log;
   setLog: (log: Log) => void;
   clearLog: () => void;
@@ -40,6 +42,8 @@ const initLog = {
 export const useLogStore = create<LogState>((set) => ({
   date: new Date(),
   setDate: (date: Date | undefined) => set({ date }),
+  chartDuration: 7,
+  setChartDuration: (chartDuration: number) => set({ chartDuration }),
   log: initLog,
   setLog: (log: Log) => set({ log }),
   clearLog: () => set({ log: initLog }),
