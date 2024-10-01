@@ -58,9 +58,9 @@ const LogChart = () => {
           className="w-full"
           onValueChange={(value) => setChartDuration(parseInt(value))}
         >
-          <TabsList>
+          <TabsList className="flex h-auto flex-wrap sm:h-10 sm:flex-nowrap">
             <Button variant={"ghost"} disabled className="text-foreground">
-              {`${format(subDays(date ?? new Date(), chartDuration), "MMM dd yyyy")} to ${format(date ?? new Date(), "MMM dd yyyy")}`}
+              {`${format(subDays(date ?? new Date(), chartDuration), "MMM dd yy")} to ${format(date ?? new Date(), "MMM dd yy")}`}
             </Button>
             <TabsTrigger value="7">Past week</TabsTrigger>
             <TabsTrigger value="30">Past month</TabsTrigger>
@@ -68,7 +68,7 @@ const LogChart = () => {
         </Tabs>
       </CardHeader>
       <CardDescription>
-        <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+        <ChartContainer config={chartConfig} className="w-full">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -76,7 +76,6 @@ const LogChart = () => {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              // tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />

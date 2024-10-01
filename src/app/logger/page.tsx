@@ -71,13 +71,15 @@ const Home = () => {
         <div className="mx-auto grid w-full max-w-6xl gap-2">
           <h1 className="text-center text-2xl font-semibold md:text-3xl">{`Hello there, let's get logging!`}</h1>
         </div>
-        <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="w-fit place-self-center rounded-md border"
-          />
+        <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[240px_1fr] lg:grid-cols-[250px_1fr]">
+          <div>
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="w-fit place-self-center rounded-md border"
+            />
+          </div>
           <div className="grid place-content-center gap-6">
             <LogChart />
             <Card x-chunk="dashboard-04-chunk-1" className="w-64 md:w-fit">
