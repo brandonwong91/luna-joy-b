@@ -18,8 +18,10 @@ import { Calendar } from "~/components/ui/calendar";
 import { useLogStore } from "./state";
 import { api } from "~/trpc/react";
 import LogChart from "./LogChart";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+  const router = useRouter();
   const { log, setLog, clearLog, date, setDate } = useLogStore(
     (state) => state,
   );
