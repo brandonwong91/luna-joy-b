@@ -14,8 +14,17 @@ import {
 import { Button } from "./button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { toast } from "sonner";
+
 export const NavigationMenuContainer = () => {
   const { data: session } = useSession();
+
+  const onClickHandler = () => {
+    if (!session?.user) {
+      toast("Please sign in to continue.");
+    }
+  };
+
   return (
     <div className="sticky top-0 z-10 -mt-12 flex place-content-center pt-2">
       <NavigationMenu className="">
@@ -35,11 +44,21 @@ export const NavigationMenuContainer = () => {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/logger" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            {session?.user ? (
+              <Link href="/logger" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Logger
+                </NavigationMenuLink>
+              </Link>
+            ) : (
+              <Button
+                variant={"ghost"}
+                onClick={onClickHandler}
+                className={navigationMenuTriggerStyle()}
+              >
                 Logger
-              </NavigationMenuLink>
-            </Link>
+              </Button>
+            )}
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Button

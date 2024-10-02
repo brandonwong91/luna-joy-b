@@ -6,6 +6,7 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "~/trpc/react";
 import { NavigationMenuContainer } from "~/components/ui/navigation-menu-container";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Luna Joy B",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <NavigationMenuContainer />
           {children}
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>
