@@ -22,9 +22,15 @@ import { useRouter } from "next/navigation";
 
 const Home = () => {
   const router = useRouter();
-  const { log, setLog, clearLog, date, setDate } = useLogStore(
-    (state) => state,
-  );
+  const {
+    log,
+    setLog,
+    clearLog,
+    date,
+    setDate,
+    physicalActivitiesInput,
+    setPhysicalActivitiesInput,
+  } = useLogStore((state) => state);
 
   const handleOnChangeLog = (
     field: string,
@@ -37,8 +43,6 @@ const Home = () => {
     setLog(updatedLog);
   };
 
-  const getLogsApi = api.log.getLogs.useQuery();
-  console.log(getLogsApi.data);
   const createLogApi = api.log.create.useMutation({
     onSuccess: () => {
       router.refresh();
@@ -54,6 +58,34 @@ const Home = () => {
       createdAt: date ?? undefined,
     });
     clearLog();
+  };
+
+  const handlePhysicalActivityInputChange = (
+    field: string,
+    value: number | string,
+  ) => {
+    setPhysicalActivitiesInput({
+      ...physicalActivitiesInput,
+      [field]: value,
+    });
+  };
+
+  const handleAddPhysicalActivity = () => {
+    const updatedLog = {
+      ...log,
+      physicalActivities: [
+        ...log.physicalActivities,
+        {
+          type: physicalActivitiesInput.type,
+          duration: physicalActivitiesInput.duration,
+        },
+      ],
+    };
+    setLog(updatedLog);
+    setPhysicalActivitiesInput({
+      type: "",
+      duration: 0,
+    });
   };
 
   return (
@@ -81,7 +113,7 @@ const Home = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex flex-col gap-y-3 md:w-fit">
+                <div className="flex flex-col gap-y-3 md:w-fit">
                   <div className="flex flex-col gap-0.5">
                     <Label className="flex">
                       Mood ratings
@@ -266,10 +298,68 @@ const Home = () => {
                   </div>
                   <div className="flex flex-col gap-y-3">
                     <Label className="text-md">Physical activity</Label>
-                    <Label>Type</Label>
-                    <Input placeholder="e.g. Sports"></Input>
-                    <Label>Duration (hr)</Label>
-                    <Input placeholder="e.g. 8"></Input>
+                    <div className="flex flex-row gap-4">
+                      <div className="w-full">
+                        <Label>Type</Label>
+                        <Input
+                          placeholder="e.g. Sports"
+                          value={physicalActivitiesInput.type}
+                          onChange={(e) =>
+                            handlePhysicalActivityInputChange(
+                              "type",
+                              e.target.value,
+                            )
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label>Duration (hr)</Label>
+                        <Input
+                          placeholder="e.g. 8"
+                          value={physicalActivitiesInput.duration}
+                          onChange={(e) =>
+                            handlePhysicalActivityInputChange(
+                              "duration",
+                              e.target.value,
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                    <Button
+                      onClick={handleAddPhysicalActivity}
+                      disabled={
+                        physicalActivitiesInput.type === "" ||
+                        physicalActivitiesInput.duration === 0 ||
+                        log.physicalActivities.find(
+                          (i) => i.type === physicalActivitiesInput.type,
+                        )
+                          ? true
+                          : false
+                      }
+                    >
+                      Add
+                    </Button>
+                    {log.physicalActivities.map(({ type, duration }) => {
+                      return (
+                        <div key={type} className="flex flex-row gap-4">
+                          <div className="w-full">
+                            <Label>Type</Label>
+                            <Input
+                              placeholder="e.g. Sports"
+                              value={type}
+                            ></Input>
+                          </div>
+                          <div>
+                            <Label>Duration (hr)</Label>
+                            <Input
+                              placeholder="e.g. 8"
+                              value={duration}
+                            ></Input>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="flex items-center gap-x-2">
                     <Checkbox
@@ -297,7 +387,7 @@ const Home = () => {
 
                   <Label>Symptoms of depression or anxiety</Label>
                   <Input placeholder="e.g. Feeling sad"></Input>
-                </form>
+                </div>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button

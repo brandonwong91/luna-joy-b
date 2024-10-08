@@ -25,6 +25,10 @@ interface LogState {
   log: Log;
   setLog: (log: Log) => void;
   clearLog: () => void;
+  physicalActivitiesInput: PhysicalActivity;
+  setPhysicalActivitiesInput: (
+    physicalActivitiesInput: PhysicalActivity,
+  ) => void;
 }
 
 const initLog = {
@@ -47,4 +51,10 @@ export const useLogStore = create<LogState>((set) => ({
   log: initLog,
   setLog: (log: Log) => set({ log }),
   clearLog: () => set({ log: initLog }),
+  physicalActivitiesInput: {
+    type: "",
+    duration: 0,
+  },
+  setPhysicalActivitiesInput: (physicalActivitiesInput: PhysicalActivity) =>
+    set({ physicalActivitiesInput }),
 }));

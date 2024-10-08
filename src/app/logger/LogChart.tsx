@@ -48,7 +48,6 @@ const LogChart = () => {
     }),
   );
 
-  console.log(queryGetLogByDate.data);
   return (
     <Card>
       <CardHeader>
