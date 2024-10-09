@@ -26,8 +26,8 @@ export const NavigationMenuContainer = () => {
   };
 
   return (
-    <div className="sticky top-0 z-10 -mt-12 flex place-content-center pt-2">
-      <NavigationMenu className="">
+    <div className="sticky top-0 z-10 -mt-11 flex place-content-center pt-2">
+      <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>

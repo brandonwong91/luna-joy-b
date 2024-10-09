@@ -5,7 +5,6 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { NavigationMenuContainer } from "~/components/ui/navigation-menu-container";
-import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
