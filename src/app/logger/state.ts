@@ -29,14 +29,16 @@ interface LogState {
   setPhysicalActivitiesInput: (
     physicalActivitiesInput: PhysicalActivity,
   ) => void;
+  refreshQueryGetLogByDate: (() => void) | null;
+  setRefreshQueryGetLogByDate: (refetch: () => void) => void;
 }
 
 const initLog = {
-  moodRatings: undefined,
-  anxietyLevels: undefined,
-  stressLevels: undefined,
-  sleepHours: undefined,
-  sleepQuality: undefined,
+  moodRatings: Infinity,
+  anxietyLevels: Infinity,
+  stressLevels: Infinity,
+  sleepHours: Infinity,
+  sleepQuality: Infinity,
   sleepDisturbances: false,
   physicalActivities: [],
   socialInteractions: false,
@@ -57,4 +59,7 @@ export const useLogStore = create<LogState>((set) => ({
   },
   setPhysicalActivitiesInput: (physicalActivitiesInput: PhysicalActivity) =>
     set({ physicalActivitiesInput }),
+  refreshQueryGetLogByDate: null,
+  setRefreshQueryGetLogByDate: (refetch) =>
+    set({ refreshQueryGetLogByDate: refetch }),
 }));

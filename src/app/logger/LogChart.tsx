@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BarChart, Bar, CartesianGrid, XAxis } from "recharts";
 import { Card, CardDescription, CardHeader } from "~/components/ui/card";
 import {
@@ -31,9 +31,8 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const LogChart = () => {
-  const { chartDuration, setChartDuration, date } = useLogStore(
-    (state) => state,
-  );
+  const { chartDuration, setChartDuration, date, setRefreshQueryGetLogByDate } =
+    useLogStore((state) => state);
   const queryGetLogByDate = api.log.getLogsByDate.useQuery({
     startDate: subDays(date ?? new Date(), chartDuration),
     endDate: date ?? new Date(),
@@ -47,6 +46,14 @@ const LogChart = () => {
       stressLevels,
     }),
   );
+
+  useEffect(() => {
+    if (queryGetLogByDate.data && queryGetLogByDate.isFetched) {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      setRefreshQueryGetLogByDate(queryGetLogByDate.refetch);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryGetLogByDate.data]);
 
   return (
     <Card>

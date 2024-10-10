@@ -19,6 +19,8 @@ import { useLogStore } from "./state";
 import { api } from "~/trpc/react";
 import LogChart from "./LogChart";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { format } from "date-fns";
 
 const Home = () => {
   const router = useRouter();
@@ -30,6 +32,7 @@ const Home = () => {
     setDate,
     physicalActivitiesInput,
     setPhysicalActivitiesInput,
+    refreshQueryGetLogByDate,
   } = useLogStore((state) => state);
 
   const handleOnChangeLog = (
@@ -44,17 +47,24 @@ const Home = () => {
   };
 
   const createLogApi = api.log.create.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       router.refresh();
+      toast(
+        `Log created for ${format(date?.toString() ?? Date.now().toString(), "MMM-dd-yyyy")}`,
+      );
+      clearLog();
+      if (refreshQueryGetLogByDate) {
+        refreshQueryGetLogByDate();
+      }
     },
   });
 
   const handleSaveLog = async () => {
     createLogApi.mutate({
       ...log,
-      moodRatings: log.moodRatings ?? 0,
-      anxietyLevels: log.anxietyLevels ?? 0,
-      stressLevels: log.stressLevels ?? 0,
+      moodRatings: log.moodRatings ?? Infinity,
+      anxietyLevels: log.anxietyLevels ?? Infinity,
+      stressLevels: log.stressLevels ?? Infinity,
       createdAt: date ?? undefined,
     });
     clearLog();
