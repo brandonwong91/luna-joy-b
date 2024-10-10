@@ -1,4 +1,16 @@
-# Create T3 App
+# Luna Joy B
+
+Task was to create a web app using React for frontend and NodeJS for backend, allows the user to log daily mental health statuses and view trends over time. Should be secured and user-friendly.
+
+## Requirements
+- [ ] User Auth - Google login : done by using NextAuth
+- [ ] Daily Log Form - Adopted Shadcn components
+- [ ] Data Visualization - Shadcn has charts now, powered by recharts
+- [ ] Real time entries - using trpc's refetch hooks, no websocket needed for this.
+- [ ] API endpoints on /log and /logs powered by NextJS's API route
+- [ ] Database integration - PostgresDB hosted by Neon
+
+# Powered by Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
