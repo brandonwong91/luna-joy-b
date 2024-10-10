@@ -3,12 +3,12 @@
 Task was to create a web app using React for frontend and NodeJS for backend, allows the user to log daily mental health statuses and view trends over time. Should be secured and user-friendly.
 
 ## Requirements
-- [ ] User Auth - Google login : done by using NextAuth
-- [ ] Daily Log Form - Adopted Shadcn components
-- [ ] Data Visualization - Shadcn has charts now, powered by recharts
-- [ ] Real time entries - using trpc's refetch hooks, no websocket needed for this.
-- [ ] API endpoints on /log and /logs powered by NextJS's API route
-- [ ] Database integration - PostgresDB hosted by Neon
+- [X] User Auth - Google login : done by using NextAuth
+- [X] Daily Log Form - Adopted Shadcn components
+- [X] Data Visualization - Shadcn has charts now, powered by recharts
+- [X] Real time entries - using trpc's refetch hooks, no websocket needed for this.
+- [X] API endpoints on /log and /logs powered by NextJS's API route
+- [X] Database integration - PostgresDB hosted by Neon
 
 # Powered by Create T3 App
 
